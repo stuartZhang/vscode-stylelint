@@ -52,3 +52,5 @@
 请直接在`VSCode`应用商城内搜索关键字`stylelint-stzhang`。然后，点击安装即可。简单不？
 
 ![安装](https://raw.githubusercontent.com/stuartZhang/vscode-stylelint/master/media/install-1.png)
+
+在VSCode插件市场的项目首页：https://marketplace.visualstudio.com/items?itemName=stuartzhang.stylelint-stzhang
