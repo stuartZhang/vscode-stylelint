@@ -34,4 +34,4 @@
 
 ## 插件安装
 
-![安装](https://raw.githubusercontent.com/shinnn/vscode-stylelint/master/media/install-1.png)
+![安装](https://raw.githubusercontent.com/stuartZhang/vscode-stylelint/master/media/install-1.png)
