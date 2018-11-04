@@ -122,7 +122,6 @@
 		"postcss-jsx": "^0.34.0",
 		"postcss-markdown": "^0.34.0",
 		"postcss-syntax": "^0.34.0",
-		"stylelint": "^9.7.1",
 		"stylelint-warning-to-vscode-diagnostic": "^1.0.1",
 		"vscode-languageclient": "^5.1.0",
 		"vscode-languageserver": "^5.1.0"

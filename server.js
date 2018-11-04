@@ -25,23 +25,25 @@ async function validate(document, autoFix_) {
 		options.configOverrides = configOverrides;
 	}
 	const documentPath = Files.uriToFilePath(document.uri);
+	let workspacePath;
 	if (documentPath) {
 		const workspaceFolders = await connection.workspace.getWorkspaceFolders();
-
 		if (workspaceFolders) {
 			for (const {uri} of workspaceFolders) {
-				const workspacePath = Files.uriToFilePath(uri);
-
+				workspacePath = Files.uriToFilePath(uri);
 				if (pathIsInside(documentPath, workspacePath)) {
 					options.ignorePath = join(workspacePath, '.stylelintignore');
 					break;
 				}
+				workspacePath = null;
 			}
 		}
-
 		if (options.ignorePath === undefined) {
 			options.ignorePath = join(findPkgDir(documentPath) || parse(documentPath).root, '.stylelintignore');
 		}
+	}
+	if (workspacePath) {
+		options.workspace = workspacePath;
 	}
 	try {
 		connection.sendDiagnostics({
@@ -49,6 +51,10 @@ async function validate(document, autoFix_) {
 			diagnostics: await stylelintVSCode(document, options)
 		});
 	} catch (err) {
+		if (err.code === -101010) {
+			connection.console.error(`${err.message}\n${err.stack}`);
+			return;
+		}
 		if (err.reasons) {
 			for (const reason of err.reasons) {
 				connection.window.showErrorMessage(`stylelint: ${reason}`);
@@ -56,13 +62,11 @@ async function validate(document, autoFix_) {
 
 			return;
 		}
-
 		// https://github.com/stylelint/stylelint/blob/9.5.0/lib/utils/configurationError.js#L9
 		if (err.code === 78) {
 			connection.window.showErrorMessage(`stylelint: ${err.message}`);
 			return;
 		}
-
 		connection.window.showErrorMessage(err.stack.replace(/\n/ug, ' '));
 	}
 }

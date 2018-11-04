@@ -5,8 +5,8 @@ const arrayToSentence = require('array-to-sentence');
 const {at, intersection, isPlainObject, map, stubString} = require('lodash');
 const {Files, TextDocument} = require('vscode-languageserver');
 const inspectWithKind = require('inspect-with-kind');
-const {lint} = require('stylelint');
 const stylelintWarningToVscodeDiagnostic = require('stylelint-warning-to-vscode-diagnostic');
+const path = require('path');
 
 // https://github.com/stylelint/stylelint/blob/9.6.0/lib/getPostcssResult.js#L13-L21
 const SUPPORTED_SYNTAXES = new Set([
@@ -61,36 +61,47 @@ function processResults({results}) {
 module.exports = async function stylelintVSCode(...args) {
 	const argLen = args.length;
 
-	if (argLen !== 1 && argLen !== 2) {
-		throw new RangeError(`Expected 1 or 2 arguments (<TextDocument>[, <Object>]), but got ${
+	if (argLen !== 2) {
+		throw new RangeError(`Expected 2 arguments (<TextDocument>, <Object>), but got ${
 			argLen === 0 ? 'no' : argLen
 		} arguments.`);
 	}
 
 	const [textDocument, options] = args;
-
+	if (!options.workspace) {
+		const err = {
+			code: 78,
+			message: 'The option <workspace> is missing for the stylelint-vscode initialization.'
+		};
+		throw err;
+	}
+	let lint;
+	try {
+		({lint} = require(path.join(options.workspace, 'node_modules/stylelint')));
+	} catch (error) {
+		error.code = -101010;
+		throw error;
+	}
 	if (!TextDocument.is(textDocument)) {
 		throw new TypeError(`Expected a TextDocument https://code.visualstudio.com/docs/extensionAPI/vscode-api#TextDocument, but got ${
 			inspectWithKind(textDocument)
 		}.`);
 	}
 
-	if (argLen === 2) {
-		if (!isPlainObject(options)) {
-			throw new TypeError(`Expected an object containing stylelint API options, but got ${
-				inspectWithKind(options)
-			}.`);
-		}
+	if (!isPlainObject(options)) {
+		throw new TypeError(`Expected an object containing stylelint API options, but got ${
+			inspectWithKind(options)
+		}.`);
+	}
 
-		const providedUnsupportedOptions = intersection(Object.keys(options), UNSUPPORTED_OPTIONS);
+	const providedUnsupportedOptions = intersection(Object.keys(options), UNSUPPORTED_OPTIONS);
 
-		if (providedUnsupportedOptions.length !== 0) {
-			throw new TypeError(`${
-				arrayToSentence(map(UNSUPPORTED_OPTIONS, quote))
-			} options are not supported because they will be derived from a document and there is no need to set them manually, but ${
-				arrayToSentence(map(providedUnsupportedOptions, quote))
-			} was provided.`);
-		}
+	if (providedUnsupportedOptions.length !== 0) {
+		throw new TypeError(`${
+			arrayToSentence(map(UNSUPPORTED_OPTIONS, quote))
+		} options are not supported because they will be derived from a document and there is no need to set them manually, but ${
+			arrayToSentence(map(providedUnsupportedOptions, quote))
+		} was provided.`);
 	}
 	const codeFilename = Files.uriToFilePath(textDocument.uri);
 	const baseOptions = {
