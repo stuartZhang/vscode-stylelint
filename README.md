@@ -33,3 +33,5 @@
 * 功能：是否输出·`stylelint`语言服务的运行时日志·到`VSCode`的`stylelint channel`视窗内。
 
 ## 插件安装
+
+![安装](https://raw.githubusercontent.com/shinnn/vscode-stylelint/master/media/install-1.png)
