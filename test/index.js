@@ -6,7 +6,7 @@ const {join} = require('path');
 const test = require('tape');
 const {extensions, workspace, window} = require('vscode');
 
-const run = () => test('vscode-stylelint', async t => {
+const run = () => test('vscode-stylelint-stzhang', async t => {
 	const vscodeStylelint = extensions.getExtension('shinnn.stylelint');
 
 	const plaintextDocument = await workspace.openTextDocument({
