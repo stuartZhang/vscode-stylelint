@@ -96,7 +96,6 @@ connection.onDidChangeWatchedFiles(validateAll);
 documents.onDidChangeContent(({document}) => validate(document));
 documents.onDidSave(({document}) => {
 	if (autoFix) {
-		connection.console.info(`onDidSave:document: ${JSON.stringify(document)}`);
 		validate(document, autoFix);
 	}
 });
