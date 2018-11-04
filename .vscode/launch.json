@@ -11,7 +11,8 @@
 			"args": [
 				"--disable-extensions",
 				"--extensionDevelopmentPath=${workspaceRoot}",
-				"D:/workshop/github/work_report/.vscode/work_report.code-workspace"
+				// "D:/workshop/github/work_report/.vscode/work_report.code-workspace"
+				"D:\\workshop\\github\\vue_components\\mx-vue-mobile-components"
 			],
 			"stopOnEntry": false,
 			"sourceMaps": true,
