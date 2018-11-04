@@ -5,7 +5,7 @@ const {join, parse} = require('path');
 const {createConnection, Files, ProposedFeatures, TextDocuments} = require('vscode-languageserver');
 const findPkgDir = require('find-pkg-dir');
 const pathIsInside = require('path-is-inside');
-const stylelintVSCode = require('stylelint-vscode');
+const stylelintVSCode = require('./stylelint-vscode');
 
 let config;
 let configOverrides;
