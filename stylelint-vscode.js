@@ -92,31 +92,33 @@ module.exports = async function stylelintVSCode(...args) {
 			} was provided.`);
 		}
 	}
-
+	const codeFilename = Files.uriToFilePath(textDocument.uri);
 	const baseOptions = {
-		code: textDocument.getText(),
 		formatter: stubString
 	};
-	const codeFilename = Files.uriToFilePath(textDocument.uri);
-	let resultContainer;
 
-	if (codeFilename) {
-		baseOptions.codeFilename = codeFilename;
+	if (options.fix && codeFilename) {
+		baseOptions.files = [codeFilename];
 	} else {
-		if (SUPPORTED_SYNTAXES.has(textDocument.languageId)) {
-			baseOptions.syntax = textDocument.languageId;
+		baseOptions.code = textDocument.getText();
+		if (codeFilename) {
+			baseOptions.codeFilename = codeFilename;
 		} else {
-			const customSyntax = LANGUAGE_EXTENSION_EXCEPTION_PAIRS.get(textDocument.languageId);
+			if (SUPPORTED_SYNTAXES.has(textDocument.languageId)) {
+				baseOptions.syntax = textDocument.languageId;
+			} else {
+				const customSyntax = LANGUAGE_EXTENSION_EXCEPTION_PAIRS.get(textDocument.languageId);
 
-			if (customSyntax) {
-				baseOptions.customSyntax = `postcss-${customSyntax}`;
+				if (customSyntax) {
+					baseOptions.customSyntax = `postcss-${customSyntax}`;
+				}
+			}
+			if (!at(options, 'config.rules')[0]) {
+				baseOptions.config = {rules: {}};
 			}
 		}
-
-		if (!at(options, 'config.rules')[0]) {
-			baseOptions.config = {rules: {}};
-		}
 	}
+	let resultContainer;
 	try {
 		resultContainer = await lint({...options, ...baseOptions});
 	} catch (err) {
@@ -133,7 +135,6 @@ module.exports = async function stylelintVSCode(...args) {
 				}
 			}));
 		}
-
 		throw err;
 	}
 

@@ -60,13 +60,19 @@
 					"description": "Control whether stylelint is enabled for CSS/SCSS/Less files or not."
 				},
 				"stylelint.trace.server": {
-					"type": [
+					"type": "string",
+					"enum": [
 						"verbose",
 						"messages",
 						"off"
 					],
 					"default": "off",
-					"description": "Control whether stylelint is enabled for CSS/SCSS/Less files or not."
+					"description": "Control whether stylelint outputs the runtime logs to the `stylelint` channel or not."
+				},
+				"stylelint.autoFix": {
+					"type": "boolean",
+					"default": false,
+					"description": "Control whether stylelint automatically fixes as many errors as possible or not."
 				},
 				"stylelint.config": {
 					"type": [
