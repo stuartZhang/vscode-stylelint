@@ -87,12 +87,13 @@ connection.onInitialize(() => {
 connection.onDidChangeConfiguration(({settings}) => {
 	config = settings.stylelint.config;
 	configOverrides = settings.stylelint.configOverrides;
-
 	validateAll();
 });
 connection.onDidChangeWatchedFiles(validateAll);
-
 documents.onDidChangeContent(({document}) => validate(document));
+documents.onDidSave(event => {
+	connection.console.info(`onDidSave: event: ${JSON.stringify(event)}`);
+});
 documents.onDidClose(({document}) => connection.sendDiagnostics({
 	uri: document.uri,
 	diagnostics: []
