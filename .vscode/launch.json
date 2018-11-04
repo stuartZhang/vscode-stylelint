@@ -1,18 +1,24 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
+	"version": "0.3.2",
+	"configurations": [{
 			"name": "Launch Extension",
 			"type": "extensionHost",
 			"request": "launch",
 			"runtimeExecutable": "${execPath}",
+			"env": {
+				"NODE_ENV": "development"
+			},
 			"args": [
+				"--disable-extensions",
 				"--extensionDevelopmentPath=${workspaceRoot}",
-				"${workspaceRoot}/fixture.css"
+				"D:/workshop/github/work_report/.vscode/work_report.code-workspace"
 			],
-			"stopOnEntry": false
-		},
-		{
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"outFiles": [
+				"${workspaceRoot}/build/**/*.js"
+			]
+		}, {
 			"name": "Launch Tests",
 			"type": "extensionHost",
 			"request": "launch",
@@ -22,6 +28,12 @@
 				"--extensionTestsPath=${workspaceRoot}/test"
 			],
 			"stopOnEntry": false
+		}, {
+			"name": "Attach Server",
+			"type": "node",
+			"request": "attach",
+			"port": 6005,
+			"address": "127.0.0.1"
 		}
 	]
 }
