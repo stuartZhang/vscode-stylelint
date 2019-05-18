@@ -52,7 +52,7 @@ async function validate(document, autoFix_) {
 		});
 	} catch (err) {
 		if (err.code === -101010) {
-			connection.console.error(`${err.message}\n${err.stack}`);
+			connection.console.warn(`${err.message}\n${err.stack}`);
 			return;
 		}
 		if (err.reasons) {
