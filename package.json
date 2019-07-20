@@ -1,6 +1,6 @@
 {
 	"name": "stylelint-stzhang",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"displayName": "stylelint-stzhang",
 	"description": "Modern CSS/SCSS/Less linter",
 	"publisher": "stuartzhang",
@@ -50,6 +50,11 @@
 	],
 	"main": "index.js",
 	"contributes": {
+		"commands": [{
+			"command": "stylelint.executeAutoFix",
+			"title": "Fix all auto-fixable Problems",
+			"category": "stylelint"
+		}],
 		"configuration": {
 			"type": "object",
 			"title": "stylelint configuration options",
@@ -92,20 +97,16 @@
 				}
 			}
 		},
-		"jsonValidation": [
-			{
-				"fileMatch": "**/.stylelintrc*",
-				"url": "http://json.schemastore.org/stylelintrc.json"
-			}
-		],
-		"languages": [
-			{
-				"id": "ignore",
-				"filenames": [
-					".stylelintignore"
-				]
-			}
-		]
+		"jsonValidation": [{
+			"fileMatch": "**/.stylelintrc*",
+			"url": "http://json.schemastore.org/stylelintrc.json"
+		}],
+		"languages": [{
+			"id": "ignore",
+			"filenames": [
+				".stylelintignore"
+			]
+		}]
 	},
 	"scripts": {
 		"pretest": "eslint .",

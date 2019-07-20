@@ -5,12 +5,14 @@ const {join, parse} = require('path');
 const {createConnection, Files, ProposedFeatures, TextDocuments} = require('vscode-languageserver');
 const findPkgDir = require('find-pkg-dir');
 const pathIsInside = require('path-is-inside');
+const {ExecuteCommandRequest} = require('vscode-languageserver');
 const stylelintVSCode = require('./stylelint-vscode');
 
 let config;
 let configOverrides;
 let autoFix = false;
-
+let serverIndex = process.argv.find(arg => /^--server-index=\d+$/u.test(arg));
+serverIndex = /^--server-index=(\d+)$/u.exec(serverIndex)[1];
 const connection = createConnection(ProposedFeatures.all);
 const documents = new TextDocuments();
 
@@ -70,19 +72,21 @@ async function validate(document, autoFix_) {
 		connection.window.showErrorMessage(err.stack.replace(/\n/ug, ' '));
 	}
 }
-
 function validateAll() {
 	for (const document of documents.all()) {
 		validate(document);
 	}
 }
-
-connection.onInitialize(() => {
+// connection
+connection.onInitialize((/* params */) => {
 	validateAll();
-
+	connection.console.log(`启动语言服务(${serverIndex})`);
 	return {
 		capabilities: {
-			textDocumentSync: documents.syncKind
+			textDocumentSync: documents.syncKind,
+			executeCommandProvider: {
+				commands: [`stylelint.applyAutoFix.${serverIndex}`]
+			}
 		}
 	};
 });
@@ -93,6 +97,19 @@ connection.onDidChangeConfiguration(({settings}) => {
 	validateAll();
 });
 connection.onDidChangeWatchedFiles(validateAll);
+connection.onRequest(ExecuteCommandRequest.type, ({command, arguments: [identifier]}) => {
+	connection.console.log(`接收到指令: ${command}`);
+	if (command === `stylelint.applyAutoFix.${serverIndex}`) {
+		const uri = identifier.uri;
+		const textDocument = documents.get(uri);
+		if (!textDocument || identifier.version !== textDocument.version) {
+			return;
+		}
+		connection.console.log(`语言服务(${serverIndex}) 执行 fix 给文件(${uri})`);
+		validate(textDocument, true);
+	}
+});
+// document
 documents.onDidChangeContent(({document}) => validate(document));
 documents.onDidSave(({document}) => {
 	if (autoFix) {

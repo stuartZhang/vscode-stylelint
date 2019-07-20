@@ -28,7 +28,8 @@
     2. 另一方面，`stylelint-stzhang`则是为·工程组·内每一个工程都单独地启动一个专属的`stylelint`语言服务进程。然后，·工程根目录·与·`stylelint`配置·都与专属`stylelint`语言服务进程进行绑定。以避免乱套的发生。
 2. 模仿`VSCode`的`ESLint`插件，支持**自动纠错**功能（即，传说中的`autoFix`）。简单地讲，就是在`Ctrl + S`保存样式文件（或`vue`文件）时，由`stylelint`语言服务自动对·代码风格违约（比如，空格与缩进。甚至，十六进制颜色值的大小写）·和·简单语法错误·进行纠正并保存。
     1. 关于【自动纠错】有多么智能，请参阅[stylelint规则](https://stylelint.io/user-guide/rules/)中所有打了`Autofixable`标记的规则。
-3. 摒弃了`shinnn.stylelint`作法，同时模仿`ESLint`插件的优秀实践，`stylelint-stzhang`不再把`stylelint`内核直接打包入`VSCode`插件包内。而是，使用工程现场`npm`安装的`stylelint`实例。这样的好处是：
+3. 模仿`VSCode`的`ESLint`插件，支持**手动纠错**的`F1`命令菜单项`stylelint: Fix all auto-fixable Problems`。它的功能与用法与`ESLint: Fix all auto-fixable Problems`完全相同。
+4. 摒弃了`shinnn.stylelint`作法，和模仿`ESLint`插件的优秀实践，`stylelint-stzhang`不再把`stylelint`内核直接打包入`VSCode`插件包内。而是，使用工程现场`npm`安装的`stylelint`实例。这样的好处是：
     1. 统一了·`VSCode`开发工具·与·命令行工具·使用的`stylelint`版本。让`VSCode`的工作结果更符合你的直觉预期。
     2. 避免了因为`VSCode stylelint`插件更新不及时造成的`stylelint`版本过低的问题。
 
