@@ -13,7 +13,7 @@ for (const activationEvent of activationEvents) {
 		documentSelector.push({language, scheme: 'file'}, {language, scheme: 'untitled'});
 	}
 }
-const cmdHandles = commands.map(command => registerCommand(command.command, uri => {
+const cmdHandles = commands.map(command => registerCommand(command.command, (/* uri */) => {
 	console.log('接收到指令', command.command);
 	if (command.command === 'stylelint.executeAutoFix') {
 		const textEditor = window.activeTextEditor;

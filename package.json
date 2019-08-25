@@ -1,6 +1,6 @@
 {
 	"name": "stylelint-stzhang",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"displayName": "stylelint-stzhang",
 	"description": "Modern CSS/SCSS/Less linter",
 	"publisher": "stuartzhang",
