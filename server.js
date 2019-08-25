@@ -47,6 +47,7 @@ async function validate(document, autoFix_) {
 	if (workspacePath) {
 		options.workspace = workspacePath;
 	}
+	options.allowEmptyInput = true;
 	try {
 		connection.sendDiagnostics({
 			uri: document.uri,

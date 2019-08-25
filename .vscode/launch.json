@@ -11,8 +11,9 @@
 			"args": [
 				"--disable-extensions",
 				"--extensionDevelopmentPath=${workspaceRoot}",
+				"D:\\workshop\\github\\temp1\\ts-app-hw-function_api1"
 				// "D:\\workshop\\github\\mobile_attendance"
-				"D:\\workshop\\github\\survey_project\\information_collection\\.vscode\\info_survey.code-workspace",
+				// "D:\\workshop\\github\\survey_project\\information_collection\\.vscode\\info_survey.code-workspace",
 				// "D:/workshop/github/work_report/.vscode/work_report.code-workspace"
 				// "D:\\workshop\\github\\vue_components\\mx-vue-mobile-components"
 				// "D:\\workshop\\github\\public_platform_migrate_vue"
