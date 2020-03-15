@@ -109,7 +109,7 @@ module.exports = async function stylelintVSCode(...args) {
 	};
 
 	if (options.fix && codeFilename) {
-		baseOptions.files = [codeFilename];
+		baseOptions.files = [codeFilename.replace(/\\/ug, '/')];
 	} else {
 		baseOptions.code = textDocument.getText();
 		if (codeFilename) {
